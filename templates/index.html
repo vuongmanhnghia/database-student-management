@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quản lý sinh viên</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: Roboto, sans-serif;
+			}
+
+			body {
+				height: 100vh;
+				background-color: #f0f0f0;
+			}
+
+			nav {
+				overflow: hidden;
+				align-items: center;
+				background-color: #ad171c;
+				border-color: #901317;
+				border-style: solid;
+				border-width: 0.727273px;
+				box-shadow: #00000026 0px 8px 16px 0px;
+				color: #212529;
+				display: flex;
+				font-family: Roboto, sans-serif;
+				justify-content: flex-start;
+				line-height: 24px;
+				padding: 4px 16px;
+				text-align: left;
+				height: 40px;
+				position: fixed;
+				top: 0;
+				width: 100%;
+				z-index: 1000;
+			}
+
+			nav ul {
+				width: 100%;
+				list-style-type: none;
+				display: flex;
+				justify-content: space-around;
+				padding-right: 60px;
+				flex-wrap: wrap;
+			}
+
+			nav ul li {
+				margin: 0 10px;
+				text-align: center;
+				box-sizing: border-box;
+			}
+
+			nav ul li i {
+				margin-right: 8px;
+			}
+
+			nav > ul > li > a,
+			p {
+				color: white;
+				text-decoration: none;
+				font-size: 16px;
+				font-weight: 400;
+			}
+
+			#main {
+				justify-content: center;
+				width: 100%;
+				display: flex;
+				margin-top: 44px;
+			}
+
+			section {
+				width: 1000px;
+				display: none;
+			}
+
+			@media only screen and (max-width: 768px) {
+				section {
+					width: 100%;
+				}
+				nav ul li {
+					margin: 0px 4px;
+				}
+			}
+
+			#home {
+				display: block;
+			}
+
+			#main section h2 {
+				text-align: center;
+				font-weight: 800;
+				margin-top: 60px;
+				margin-bottom: 8px;
+			}
+
+			#main section table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-bottom: 40px;
+			}
+
+			#main section table,
+			th,
+			td {
+				border: 1px solid black;
+			}
+
+			#main section th,
+			td {
+				padding: 8px;
+				text-align: left;
+			}
+
+			#main section th {
+				text-align: center;
+				justify-content: center;
+				align-content: center;
+			}
+
+			section table .header {
+				background-color: #ad171c;
+				color: white;
+			}
+
+			section table tr {
+				width: 40px;
+				padding-top: 8px;
+			}
+
+			section form .delete {
+				background-color: #f0f0f0;
+			}
+
+			section form .delete i {
+				color: #a74448;
+			}
+
+			section form .delete i:hover {
+				color: #ad171c;
+			}
+
+			form label {
+				padding-left: 4px;
+				display: block;
+				padding-bottom: 4px;
+				font-size: 16px;
+				/* in đậm */
+				font-weight: 600;
+			}
+
+			form input[type="text"],
+			form input[type="date"],
+			form input[type="email"],
+			form input[type="number"],
+			form select {
+				width: 100%;
+				padding: 8px;
+				margin-bottom: 10px;
+				box-sizing: border-box;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+
+			section form button {
+				width: 100%;
+				padding: 10px;
+				background-color: #ad171c;
+				border: none;
+				border-radius: 5px;
+				color: white;
+				font-size: 18px;
+				cursor: pointer;
+			}
+
+			footer {
+				margin-top: 20px;
+				margin-bottom: 10px;
+			}
+
+			footer p {
+				color: #000;
+				text-align: center;
+				font-size: 16px;
+				padding-bottom: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- thanh navigation -->
+		<nav>
+			<ul>
+				<li>
+					<a href="#home"><i class="fa-solid fa-house"></i>Trang chủ</a>
+				</li>
+				<li><a href="#sinh_vien_info">Sinh viên</a></li>
+				<li><a href="#mon_hoc_info">Môn học</a></li>
+				<li><a href="#diem_info">Điểm</a></li>
+				<li><a href="#giang_vien_info">Giảng viên</a></li>
+				<li><a href="#lop_hoc_info">Lớp học</a></li>
+				<li><a href="#khoa_info">Khoa</a></li>
+				<li><a href="#nganh_info">Ngành</a></li>
+			</ul>
+		</nav>
+		<div id="main">
+			<!-- home -->
+			<section id="home">
+				<h2>Hệ thống quản lý sinh viên</h2>
+			</section>
+
+			<!-- section sinh viên -->
+			<section id="sinh_vien_info">
+				<!-- Tạo form thêm sinh viên -->
+				<h2>Thêm thông tin sinh viên</h2>
+				<form method="POST" action="{{ url_for('add_sinh_vien') }}">
+					<label for="ma_sv">Mã sinh viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_sv"
+						name="ma_sv"
+						required />
+					<label for="ho_ten">Họ Tên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ho_ten"
+						name="ho_ten"
+						required />
+					<label for="ngay_sinh">Ngày Sinh</label>
+					<input
+						type="date"
+						class="form-control"
+						id="ngay_sinh"
+						name="ngay_sinh"
+						required />
+					<label for="gioi_tinh">Giới Tính</label>
+					<select
+						class="form-control"
+						id="gioi_tinh"
+						name="gioi_tinh"
+						required>
+						<option value="Nam">Nam</option>
+						<option value="Nữ">Nữ</option>
+						<option value="Khác">Khác</option>
+					</select>
+					<label for="noi_sinh">Nơi Sinh</label>
+					<input
+						type="text"
+						class="form-control"
+						id="noi_sinh"
+						name="noi_sinh"
+						required />
+					<label for="so_dien_thoai">Số Điện Thoại</label>
+					<input
+						type="text"
+						class="form-control"
+						id="so_dien_thoai"
+						name="so_dien_thoai"
+						required />
+					<label for="email">Email</label>
+					<input
+						type="email"
+						class="form-control"
+						id="email"
+						name="email"
+						required />
+					<label for="ma_khoa">Mã Khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_khoa"
+						name="ma_khoa"
+						required />
+					<label for="ma_nganh">Mã Ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_nganh"
+						name="ma_nganh"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin sinh viên -->
+				<h2>Chỉnh sửa thông tin sinh viên</h2>
+				<form method="POST" action="{{ url_for('update_sinh_vien') }}">
+					<label for="ma_sv">Mã sinh viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_sv"
+						name="ma_sv"
+						required />
+					<label for="ho_ten">Họ Tên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ho_ten"
+						name="ho_ten"
+						required />
+					<label for="ngay_sinh">Ngày Sinh</label>
+					<input
+						type="date"
+						class="form-control"
+						id="ngay_sinh"
+						name="ngay_sinh"
+						required />
+					<label for="gioi_tinh">Giới Tính</label>
+					<select
+						class="form-control"
+						id="gioi_tinh"
+						name="gioi_tinh"
+						required>
+						<option value="Nam">Nam</option>
+						<option value="Nữ">Nữ</option>
+						<option value="Khác">Khác</option>
+					</select>
+					<label for="noi_sinh">Nơi Sinh</label>
+					<input
+						type="text"
+						class="form-control"
+						id="noi_sinh"
+						name="noi_sinh"
+						required />
+					<label for="so_dien_thoai">Số Điện Thoại</label>
+					<input
+						type="text"
+						class="form-control"
+						id="so_dien_thoai"
+						name="so_dien_thoai"
+						required />
+					<label for="email">Email</label>
+					<input
+						type="email"
+						class="form-control"
+						id="email"
+						name="email"
+						required />
+					<label for="ma_khoa">Mã Khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_khoa"
+						name="ma_khoa"
+						required />
+					<label for="ma_nganh">Mã Ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_nganh"
+						name="ma_nganh"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<h2>Danh sách sinh viên</h2>
+				<table id="table-sv" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã SV</th>
+							<th>Họ Tên</th>
+							<th>Ngày Sinh</th>
+							<th>Giới Tính</th>
+							<th>Nơi Sinh</th>
+							<th>Số Điện Thoại</th>
+							<th>Email</th>
+							<th>Mã Khoa</th>
+							<th>Mã Ngành</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for sv in sinh_vien_info %}
+						<tr>
+							<td>{{ sv.ma_sv }}</td>
+							<td>{{ sv.ho_ten }}</td>
+							<td>{{ sv.ngay_sinh }}</td>
+							<td>{{ sv.gioi_tinh }}</td>
+							<td>{{ sv.noi_sinh }}</td>
+							<td>{{ sv.so_dien_thoai }}</td>
+							<td>{{ sv.email }}</td>
+							<td>{{ sv.ma_khoa }}</td>
+							<td>{{ sv.ma_nganh }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_sinh_vien', ma_sv=sv.ma_sv) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section môn học -->
+			<section id="mon_hoc_info">
+				<!-- Tạo form thêm môn học -->
+				<h2>Thêm thông tin môn học</h2>
+				<form method="POST" action="{{ url_for('add_mon_hoc') }}">
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<label for="ten_mon">Tên môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ten_mon"
+						name="ten_mon"
+						required />
+					<label for="so_tin_chi">Số tín chỉ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="so_tin_chi"
+						name="so_tin_chi"
+						required />
+					<label for="ma_lop">Mã lớp</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_lop"
+						name="ma_lop"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin sinh viên -->
+				<h2>Chỉnh sửa thông tin môn học</h2>
+				<form method="POST" action="{{ url_for('update_mon_hoc') }}">
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<label for="ten_mon">Tên môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ten_mon"
+						name="ten_mon"
+						required />
+					<label for="so_tin_chi">Số tín chỉ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="so_tin_chi"
+						name="so_tin_chi"
+						required />
+					<label for="ma_lop">Mã lớp</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_lop"
+						name="ma_lop"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Danh sách môn học -->
+				<h2>Danh sách môn học</h2>
+				<table id="table-sv" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã môn</th>
+							<th>Tên môn</th>
+							<th>Số tín chỉ</th>
+							<th>Mã lớp</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for mh in mon_hoc_info %}
+						<tr>
+							<td>{{ mh.ma_mon }}</td>
+							<td>{{ mh.ten_mon }}</td>
+							<td>{{ mh.so_tin_chi }}</td>
+							<td>{{ mh.ma_lop }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_mon_hoc', ma_mon=mh.ma_mon) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa môn học này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section điểm -->
+			<section id="diem_info">
+				<!-- Tạo form thêm điểm -->
+				<h2>Thêm thông tin điểm</h2>
+				<form method="POST" action="{{ url_for('add_diem') }}">
+					<label for="ma_diem">Mã điểm</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_diem"
+						name="ma_diem"
+						required />
+					<label for="diem_bt">Điểm bài tập</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_bt"
+						name="diem_bt"
+						required />
+					<label for="diem_gk">Điểm giữa kỳ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_gk"
+						name="diem_gk"
+						required />
+					<label for="diem_ck">Điểm cuối kỳ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_ck"
+						name="diem_ck"
+						required />
+					<label for="diem_tk">Điểm tổng kết</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_tk"
+						name="diem_tk"
+						required />
+					<label for="ket_qua">Kết quả</label>
+					<select
+						class="form-control"
+						id="ket_qua"
+						name="ket_qua"
+						required>
+						<option value="Đạt">Đạt</option>
+						<option value="Không đạt">Không đạt</option>
+					</select>
+					<label for="ma_sv">Mã sinh viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_sv"
+						name="ma_sv"
+						required />
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin môn học -->
+				<h2>Chỉnh sửa thông điểm</h2>
+				<form method="POST" action="{{ url_for('update_diem') }}">
+					<label for="ma_diem">Mã điểm</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_diem"
+						name="ma_diem"
+						required />
+					<label for="diem_bt">Điểm bài tập</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_bt"
+						name="diem_bt"
+						required />
+					<label for="diem_gk">Điểm giữa kỳ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_gk"
+						name="diem_gk"
+						required />
+					<label for="diem_ck">Điểm cuối kỳ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_ck"
+						name="diem_ck"
+						required />
+					<label for="diem_tk">Điểm tổng kết</label>
+					<input
+						type="number"
+						class="form-control"
+						id="diem_tk"
+						name="diem_tk"
+						required />
+					<label for="ket_qua">Kết quả</label>
+					<select
+						class="form-control"
+						id="ket_qua"
+						name="ket_qua"
+						required>
+						<option value="Đạt">Đạt</option>
+						<option value="Không đạt">Không đạt</option>
+					</select>
+					<label for="ma_sv">Mã sinh viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_sv"
+						name="ma_sv"
+						required />
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Danh sách điểm -->
+				<h2>Danh sách điểm</h2>
+				<table id="table-diem" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã điểm</th>
+							<th>Điểm bài tập</th>
+							<th>Điểm giữa kỳ</th>
+							<th>Điểm cuối kỳ</th>
+							<th>Điểm tổng kết</th>
+							<th>Kết quả</th>
+							<th>Mã SV</th>
+							<th>Mã môn</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for d in diem_info %}
+						<tr>
+							<td>{{ d.ma_diem }}</td>
+							<td>{{ d.diem_bt }}</td>
+							<td>{{ d.diem_gk }}</td>
+							<td>{{ d.diem_ck }}</td>
+							<td>{{ d.diem_tk }}</td>
+							<td>{{ d.ket_qua }}</td>
+							<td>{{ d.ma_sv }}</td>
+							<td>{{ d.ma_mon }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_diem', ma_diem=d.ma_diem) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh sách điểm này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section giảng viên -->
+			<section id="giang_vien_info">
+				<!-- Tạo form thêm giảng viên -->
+				<h2>Thêm thông tin giảng viên</h2>
+				<form method="POST" action="{{ url_for('add_giang_vien') }}">
+					<label for="ma_gv">Mã giảng viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_gv"
+						name="ma_gv"
+						required />
+					<label for="ho_ten">Họ Tên:</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ho_ten"
+						name="ho_ten"
+						required />
+					<label for="ngay_sinh">Ngày Sinh:</label>
+					<input
+						type="date"
+						class="form-control"
+						id="ngay_sinh"
+						name="ngay_sinh"
+						required />
+					<label for="gioi_tinh">Giới Tính:</label>
+					<select
+						class="form-control"
+						id="gioi_tinh"
+						name="gioi_tinh"
+						required>
+						<option value="Nam">Nam</option>
+						<option value="Nữ">Nữ</option>
+						<option value="Khác">Khác</option>
+					</select>
+					<label for="so_dien_thoai">Số Điện Thoại:</label>
+					<input
+						type="text"
+						class="form-control"
+						id="so_dien_thoai"
+						name="so_dien_thoai"
+						required />
+					<label for="email">Email:</label>
+					<input
+						type="email"
+						class="form-control"
+						id="email"
+						name="email"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin giảng viên -->
+				<h2>Chỉnh sửa thông tin giảng viên</h2>
+				<form method="POST" action="{{ url_for('update_giang_vien') }}">
+					<label for="ma_gv">Mã giảng viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_gv"
+						name="ma_gv"
+						required />
+					<label for="ho_ten">Họ Tên:</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ho_ten"
+						name="ho_ten"
+						required />
+					<label for="ngay_sinh">Ngày Sinh:</label>
+					<input
+						type="date"
+						class="form-control"
+						id="ngay_sinh"
+						name="ngay_sinh"
+						required />
+					<label for="gioi_tinh">Giới Tính:</label>
+					<select
+						class="form-control"
+						id="gioi_tinh"
+						name="gioi_tinh"
+						required>
+						<option value="Nam">Nam</option>
+						<option value="Nữ">Nữ</option>
+						<option value="Khác">Khác</option>
+					</select>
+					<label for="so_dien_thoai">Số Điện Thoại:</label>
+					<input
+						type="text"
+						class="form-control"
+						id="so_dien_thoai"
+						name="so_dien_thoai"
+						required />
+					<label for="email">Email:</label>
+					<input
+						type="email"
+						class="form-control"
+						id="email"
+						name="email"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<!-- Danh sách giảng viên -->
+				<h2>Danh sách giảng viên</h2>
+				<table id="table-gv" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã GV</th>
+							<th>Họ Tên</th>
+							<th>Ngày Sinh</th>
+							<th>Giới Tính</th>
+							<th>Số Điện Thoại</th>
+							<th>Email</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for gv in giang_vien_info %}
+						<tr>
+							<td>{{ gv.ma_gv }}</td>
+							<td>{{ gv.ho_ten }}</td>
+							<td>{{ gv.ngay_sinh }}</td>
+							<td>{{ gv.gioi_tinh }}</td>
+							<td>{{ gv.so_dien_thoai }}</td>
+							<td>{{ gv.email }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_giang_vien', ma_gv=gv.ma_gv) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa giảng viên này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section lớp học -->
+			<section id="lop_hoc_info">
+				<!-- Tạo form thêm lớp học -->
+				<h2>Thêm thông tin lớp học</h2>
+				<form method="POST" action="{{ url_for('add_lop_hoc') }}">
+					<label for="ma_lop">Mã lớp học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_lop"
+						name="ma_lop"
+						required />
+					<label for="phong_hoc">Phòng học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="phong_hoc"
+						name="phong_hoc"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin giảng viên -->
+				<h2>Chỉnh sửa thông tin giảng viên</h2>
+				<form method="POST" action="{{ url_for('update_lop_hoc') }}">
+					<label for="ma_lop">Mã lớp học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_lop"
+						name="ma_lop"
+						required />
+					<label for="phong_hoc">Phòng học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="phong_hoc"
+						name="phong_hoc"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<!-- Danh sách lớp -->
+				<h2>Danh sách lớp học</h2>
+				<table id="table-lop_hoc" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã lớp</th>
+							<th>Phòng học</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for lh in lop_hoc_info %}
+						<tr>
+							<td>{{ lh.ma_lop }}</td>
+							<td>{{ lh.phong_hoc }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_lop_hoc', ma_lop=lh.ma_lop) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa lớp học này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section khoa -->
+			<section id="khoa_info">
+				<!-- Tạo form thêm khoa -->
+				<h2>Thêm thông tin khoa</h2>
+				<form method="POST" action="{{ url_for('add_khoa') }}">
+					<label for="ma_khoa">Mã khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_khoa"
+						name="ma_khoa"
+						required />
+					<label for="ten_khoa">Tên khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ten_khoa"
+						name="ten_khoa"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin khoa -->
+				<h2>Chỉnh sửa thông tin giảng viên</h2>
+				<form method="POST" action="{{ url_for('update_khoa') }}">
+					<label for="ma_khoa">Mã khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_lop"
+						name="ma_lop"
+						required />
+					<label for="ten_khoa">Tên khoa</label>
+					<input
+						type="text"
+						class="form-control"
+						id="phong_hoc"
+						name="phong_hoc"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<!-- Danh sách khoa -->
+				<h2>Danh sách khoa</h2>
+				<table id="table-khoa" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã khoa</th>
+							<th>Tên khoa</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for k in khoa_info %}
+						<tr>
+							<td>{{ k.ma_khoa }}</td>
+							<td>{{ k.ten_khoa }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_khoa', ma_khoa=k.ma_khoa) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa khoa này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section ngành -->
+			<section id="nganh_info">
+				<!-- Tạo form thêm ngành -->
+				<h2>Thêm thông tin ngành</h2>
+				<form method="POST" action="{{ url_for('add_nganh') }}">
+					<label for="ma_nganh">Mã ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_nganh"
+						name="ma_nganh"
+						required />
+					<label for="ten_nganh">Tên ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ten_nganh"
+						name="ten_nganh"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin ngành -->
+				<h2>Chỉnh sửa thông tin ngành</h2>
+				<form method="POST" action="{{ url_for('update_nganh') }}">
+					<label for="ma_nganh">Mã ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_nganh"
+						name="ma_nganh"
+						required />
+					<label for="ten_nganh">Tên ngành</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ten_nganh"
+						name="ten_nganh"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<!-- Danh sách khoa -->
+				<h2>Danh sách ngành</h2>
+				<table id="table-nganh" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã ngành</th>
+							<th>Tên ngành</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for n in nganh_info %}
+						<tr>
+							<td>{{ n.ma_nganh }}</td>
+							<td>{{ n.ten_nganh }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_nganh', ma_nganh=n.ma_nganh) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa ngành này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+		</div>
+		<footer>
+			<p>&copy; 2024 Quản lí sinh viên. All rights reserved.</p>
+		</footer>
+
+		<!-- script -->
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const sections = document.querySelectorAll("section");
+				const navLinks = document.querySelectorAll("nav ul li a");
+
+				sections.forEach((section) => {
+					if (section.id !== "home") {
+						section.style.display = "none";
+					}
+				});
+
+				navLinks.forEach((link) => {
+					link.addEventListener("click", function (event) {
+						event.preventDefault();
+						const targetId = this.getAttribute("href").substring(1);
+
+						sections.forEach((section) => {
+							section.style.display =
+								section.id === targetId ? "block" : "none";
+						});
+
+						navLinks.forEach((nav) => nav.classList.remove("active"));
+						this.classList.add("active");
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
