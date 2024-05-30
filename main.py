@@ -11,7 +11,6 @@ conn = pyodbc.connect(
     "UID=sa;"
     "PWD=123"
 )
-print(pyodbc.drivers())
 cursor = conn.cursor()
 
 
