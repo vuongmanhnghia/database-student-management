@@ -201,11 +201,14 @@
 				</li>
 				<li><a href="#sinh_vien_info">Sinh viên</a></li>
 				<li><a href="#mon_hoc_info">Môn học</a></li>
+				<li><a href="#lich_hoc_info">Lịch học</a></li>
 				<li><a href="#diem_info">Điểm</a></li>
 				<li><a href="#giang_vien_info">Giảng viên</a></li>
 				<li><a href="#lop_hoc_info">Lớp học</a></li>
 				<li><a href="#khoa_info">Khoa</a></li>
 				<li><a href="#nganh_info">Ngành</a></li>
+				<li><a href="#dang_ky_info">Đăng ký môn học</a></li>
+				<li><a href="#phu_trach_info">Phụ trách</a></li>
 			</ul>
 		</nav>
 		<div id="main">
@@ -498,6 +501,111 @@
 									method="POST"
 									action="{{ url_for('delete_mon_hoc', ma_mon=mh.ma_mon) }}"
 									onsubmit="return confirm('Bạn có chắc chắn muốn xóa môn học này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section lịch học -->
+			<section id="lich_hoc_info">
+				<!-- Tạo form thêm lịch học -->
+				<h2>Thêm thông tin môn học</h2>
+				<form method="POST" action="{{ url_for('add_lich_hoc') }}">
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<label for="thu">Thứ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="thu"
+						name="thu"
+						required />
+					<label for="tiet_bat_dau">Tiết bắt đầu</label>
+					<input
+						type="number"
+						class="form-control"
+						id="tiet_bat_dau"
+						name="tiet_bat_dau"
+						required />
+					<label for="thoi_gian_hoc">Thời gian học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="thoi_gian_hoc"
+						name="thoi_gian_hoc"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Tạo form sửa thông tin sinh viên -->
+				<h2>Chỉnh sửa thông tin lịch học</h2>
+				<form method="POST" action="{{ url_for('update_lich_hoc') }}">
+					<label for="ma_mon">Mã môn học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<label for="thu">Thứ</label>
+					<input
+						type="number"
+						class="form-control"
+						id="thu"
+						name="thu"
+						required />
+					<label for="tiet_bat_dau">Tiết bắt đầu</label>
+					<input
+						type="number"
+						class="form-control"
+						id="tiet_bat_dau"
+						name="tiet_bat_dau"
+						required />
+					<label for="thoi_gian_hoc">Thời gian học</label>
+					<input
+						type="text"
+						class="form-control"
+						id="thoi_gian_hoc"
+						name="thoi_gian_hoc"
+						required />
+					<button class="button" type="submit">Thay đổi</button>
+				</form>
+
+				<!-- Danh sách môn học -->
+				<h2>Danh sách môn học</h2>
+				<table id="table-sv" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã môn</th>
+							<th>Thứ</th>
+							<th>Tiết bắt đầu</th>
+							<th>Thời gian học</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for lh in lich_hoc_info %}
+						<tr>
+							<td>{{ lh.ma_mon }}</td>
+							<td>{{ lh.thu }}</td>
+							<td>{{ lh.tiet_bat_dau }}</td>
+							<td>{{ lh.thoi_gian_hoc }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_mon_hoc', ma_mon=lh.ma_mon) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa lịch học này không?');">
 									<button class="delete" type="submit">
 										<i class="fa-solid fa-trash-can"></i>
 									</button>
@@ -990,6 +1098,13 @@
 						id="ten_nganh"
 						name="ten_nganh"
 						required />
+					<label for="nien_khoa">Niên khoá</label>
+					<input
+						type="number"
+						class="form-control"
+						id="nien_khoa"
+						name="nien_khoa"
+						required />
 					<button class="button" type="submit">Thêm</button>
 				</form>
 
@@ -1010,6 +1125,13 @@
 						id="ten_nganh"
 						name="ten_nganh"
 						required />
+					<label for="nien_khoa">Niên khoá</label>
+					<input
+						type="number"
+						class="form-control"
+						id="nien_khoa"
+						name="nien_khoa"
+						required />
 					<button class="button" type="submit">Thay đổi</button>
 				</form>
 
@@ -1020,6 +1142,7 @@
 						<tr class="header">
 							<th>Mã ngành</th>
 							<th>Tên ngành</th>
+							<th>Niên khoá</th>
 							<th>Xoá</th>
 						</tr>
 					</thead>
@@ -1028,11 +1151,118 @@
 						<tr>
 							<td>{{ n.ma_nganh }}</td>
 							<td>{{ n.ten_nganh }}</td>
+							<td>{{ n.nien_khoa }}</td>
 							<td>
 								<form
 									method="POST"
 									action="{{ url_for('delete_nganh', ma_nganh=n.ma_nganh) }}"
 									onsubmit="return confirm('Bạn có chắc chắn muốn xóa ngành này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section đăng ký -->
+			<section id="dang_ky_info">
+				<!-- Tạo form thêm đăng ký -->
+				<h2>Đăng ký môn học</h2>
+				<form method="POST" action="{{ url_for('add_dang_ky') }}">
+					<label for="ma_sv">Mã SV</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_sv"
+						name="ma_sv"
+						required />
+					<label for="ma_mon">Tên môn</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Danh sách đăng ký -->
+				<h2>Danh sách đăng ký</h2>
+				<table id="table-dang_ky" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã SV</th>
+							<th>Mã môn</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for dk in dang_ky_info %}
+						<tr>
+							<td>{{ dk.ma_sv }}</td>
+							<td>{{ dk.ma_mon }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_dang_ky', ma_sv=dk.ma_sv, ma_mon=dk.ma_mon) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa đăng ký này không?');">
+									<button class="delete" type="submit">
+										<i class="fa-solid fa-trash-can"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<!-- section phụ trách -->
+			<section id="phu_trach_info">
+				<!-- Tạo form thêm phụ trách -->
+				<h2>Thêm thông tin phụ trách</h2>
+				<form method="POST" action="{{ url_for('add_phu_trach') }}">
+					<label for="ma_gv">Mã giảng viên</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_gv"
+						name="ma_sv"
+						required />
+					<label for="ma_mon">Tên môn</label>
+					<input
+						type="text"
+						class="form-control"
+						id="ma_mon"
+						name="ma_mon"
+						required />
+					<button class="button" type="submit">Thêm</button>
+				</form>
+
+				<!-- Danh sách phụ trách -->
+				<h2>Danh sách phụ trách</h2>
+				<table id="table-dang_ky" class="table">
+					<thead>
+						<tr class="header">
+							<th>Mã GV</th>
+							<th>Mã môn</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for pt in phu_trach_info %}
+						<tr>
+							<td>{{ pt.ma_gv }}</td>
+							<td>{{ pt.ma_mon }}</td>
+							<td>
+								<form
+									method="POST"
+									action="{{ url_for('delete_phu_trach', ma_gv=pt.ma_gv, ma_mon=pt.ma_mon) }}"
+									onsubmit="return confirm('Bạn có chắc chắn muốn xóa phụ trách này không?');">
 									<button class="delete" type="submit">
 										<i class="fa-solid fa-trash-can"></i>
 									</button>

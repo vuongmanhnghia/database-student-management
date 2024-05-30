@@ -7,10 +7,11 @@ app = Flask(__name__)
 conn = pyodbc.connect(
     "DRIVER={ODBC Driver 17 for SQL Server};"
     "SERVER=MSI;"
-    "DATABASE=QuanLySinhVien;"
+    "DATABASE=QLSV;"
     "UID=sa;"
     "PWD=123"
 )
+print(pyodbc.drivers())
 cursor = conn.cursor()
 
 
@@ -20,6 +21,7 @@ def get_data():
     # Khởi tạo các danh sách rỗng để lưu trữ CSDL
     sinh_vien_info = []
     mon_hoc_info = []
+    lich_hoc_info = []
     diem_info = []
     giang_vien_info = []
     lop_hoc_info = []
@@ -37,6 +39,11 @@ def get_data():
     query = "SELECT * FROM Mon_Hoc"
     cursor.execute(query)
     mon_hoc_info = [row for row in cursor.fetchall()]
+
+    # Lấy danh sách lịch học từ CSDL
+    query = "SELECT * FROM Lich_Hoc"
+    cursor.execute(query)
+    lich_hoc_info = [row for row in cursor.fetchall()]
 
     # Lấy danh sách điểm từ CSDL
     query = "SELECT * FROM Diem"
@@ -77,6 +84,7 @@ def get_data():
         "index.html",
         sinh_vien_info=sinh_vien_info,
         mon_hoc_info=mon_hoc_info,
+        lich_hoc_info=lich_hoc_info,
         diem_info=diem_info,
         giang_vien_info=giang_vien_info,
         lop_hoc_info=lop_hoc_info,
@@ -203,6 +211,48 @@ def delete_mon_hoc(ma_mon):
     conn.commit()
     return redirect(url_for("get_data"))
 
+
+# Thêm lịch học
+@app.route("/add_lich_hoc", methods=["POST"])
+def add_lich_hoc():
+    ma_mon = request.form["ma_mon"]
+    thu = request.form["thu"]
+    tiet_bat_dau = request.form["tiet_bat_dau"]
+    thoi_gian_hoc = request.form["ma_lop"]
+
+    query = (
+        "INSERT INTO Lich_Hoc (Ma_Mon, thu, tiet_bat_dau, thoi_gian_hoc) VALUES (?, ?, ?, ?)"
+    )
+    values = (ma_mon, thu, tiet_bat_dau, thoi_gian_hoc)
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Sửa lịch học
+@app.route("/update_lich_hoc", methods=["POST"])
+def update_lich_hoc():
+    ma_mon = request.form["ma_mon"]
+    thu = request.form["thu"]
+    tiet_bat_dau = request.form["tiet_bat_dau"]
+    thoi_gian_hoc = request.form["thoi_gian_hoc"]
+
+    query = "UPDATE lich_hoc SET Ma_Mon = ?, thu = ?, tiet_bat_dau = ?, thoi_gian_hoc = ? WHERE Ma_Mon = ?"
+
+    values = (ma_mon, thu, tiet_bat_dau, thoi_gian_hoc)
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Xóa môn học
+@app.route("/delete_lich_hoc/<ma_mon>", methods=["POST"])
+def delete_lich_hoc(ma_mon):
+    query = "DELETE FROM Lich_Hoc WHERE ma_mon = ?"
+    values = (ma_mon,)
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
 
 # Thêm điểm
 @app.route("/add_diem", methods=["POST"])
@@ -398,11 +448,13 @@ def delete_khoa(ma_khoa):
 def add_nganh():
     ma_nganh = request.form["ma_nganh"]
     ten_nganh = request.form["ten_nganh"]
+    nien_khoa = request.form["nien_khoa"]
 
-    query = "INSERT INTO Nganh (ma_nganh, ten_nganh) VALUES (?, ?)"
+    query = "INSERT INTO Nganh (ma_nganh, ten_nganh, nien_khoa) VALUES (?, ?, ?)"
     values = (
         ma_nganh,
         ten_nganh,
+        nien_khoa,
     )
     cursor.execute(query, values)
     conn.commit()
@@ -414,11 +466,13 @@ def add_nganh():
 def update_nganh():
     ma_nganh = request.form["ma_nganh"]
     ten_nganh = request.form["ten_nganh"]
+    nien_khoa = request.form["nien_khoa"]
 
-    query = "UPDATE Khoa SET ma_nganh = ?, ten_nganh = ?"
+    query = "UPDATE Khoa SET ma_nganh = ?, ten_nganh = ?, nien_khoa = ?"
     values = (
         ma_nganh,
         ten_nganh,
+        nien_khoa,
     )
     cursor.execute(query, values)
     conn.commit()
@@ -429,6 +483,60 @@ def update_nganh():
 def delete_nganh(ma_nganh):
     query = "DELETE FROM Nganh WHERE ma_nganh = ?"
     values = (ma_nganh,)
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Thêm đăng ký
+@app.route("/add_dang_ky", methods=["POST"])
+def add_dang_ky():
+    ma_sv = request.form["ma_sv"]
+    ma_mon = request.form["ma_mon"]
+
+    query = "INSERT INTO Dang_Ky (ma_sv, ma_mon) VALUES (?, ?)"
+    values = (
+        ma_sv,
+        ma_mon,
+    )
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Xóa đăng ký
+@app.route("/delete_dang_ky/<ma_sv><ma_mon>", methods=["POST"])
+def delete_dang_ky(ma_sv, ma_mon):
+    query = "DELETE FROM Dang_Ky WHERE ma_sv, ma_mon = ?"
+    values = (ma_sv,
+              ma_mon,)
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Thêm phụ trách
+@app.route("/add_phu_trach", methods=["POST"])
+def add_phu_trach():
+    ma_gv = request.form["ma_gv"]
+    ma_mon = request.form["ma_mon"]
+
+    query = "INSERT INTO Phu_Trach (ma_gv, ma_mon) VALUES (?, ?)"
+    values = (
+        ma_gv,
+        ma_mon,
+    )
+    cursor.execute(query, values)
+    conn.commit()
+    return redirect(url_for("get_data"))
+
+
+# Xóa phụ trách
+@app.route("/delete_phu_trach/<ma_gv><ma_mon>", methods=["POST"])
+def delete_phu_trach(ma_gv, ma_mon):
+    query = "DELETE FROM Phu_Trach WHERE ma_gv, ma_mon = ?"
+    values = (ma_gv,
+              ma_mon,)
     cursor.execute(query, values)
     conn.commit()
     return redirect(url_for("get_data"))
