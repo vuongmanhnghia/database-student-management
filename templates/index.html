@@ -296,6 +296,7 @@
 				<form method="POST" action="{{ url_for('update_sinh_vien') }}">
 					<label for="ma_sv">Mã sinh viên</label>
 					<input
+						placeholder="Nhập mã sinh viên muốn chỉnh sửa..."
 						type="text"
 						class="form-control"
 						id="ma_sv"
@@ -452,7 +453,8 @@
 						class="form-control"
 						id="ma_mon"
 						name="ma_mon"
-						required />
+						required
+						placeholder="Nhập mã môn học muốn chỉnh sửa..." />
 					<label for="ten_mon">Tên môn học</label>
 					<input
 						type="text"
@@ -515,7 +517,7 @@
 			<!-- section lịch học -->
 			<section id="lich_hoc_info">
 				<!-- Tạo form thêm lịch học -->
-				<h2>Thêm thông tin môn học</h2>
+				<h2>Thêm thông tin lịch học</h2>
 				<form method="POST" action="{{ url_for('add_lich_hoc') }}">
 					<label for="ma_mon">Mã môn học</label>
 					<input
@@ -548,7 +550,7 @@
 					<button class="button" type="submit">Thêm</button>
 				</form>
 
-				<!-- Tạo form sửa thông tin sinh viên -->
+				<!-- Tạo form sửa thông tin lịch học -->
 				<h2>Chỉnh sửa thông tin lịch học</h2>
 				<form method="POST" action="{{ url_for('update_lich_hoc') }}">
 					<label for="ma_mon">Mã môn học</label>
@@ -557,7 +559,8 @@
 						class="form-control"
 						id="ma_mon"
 						name="ma_mon"
-						required />
+						required
+						placeholder="Nhập mã môn học muốn chỉnh sửa..." />
 					<label for="thu">Thứ</label>
 					<input
 						type="number"
@@ -684,7 +687,7 @@
 				</form>
 
 				<!-- Tạo form sửa thông tin điểm -->
-				<h2>Chỉnh sửa thông điểm</h2>
+				<h2>Chỉnh sửa thông tin điểm</h2>
 				<form method="POST" action="{{ url_for('update_diem') }}">
 					<label for="ma_diem">Mã điểm</label>
 					<input
@@ -692,7 +695,8 @@
 						class="form-control"
 						id="ma_diem"
 						name="ma_diem"
-						required />
+						required
+						placeholder="Nhập mã điểm muốn chỉnh sửa..." />
 					<label for="diem_bt">Điểm bài tập</label>
 					<input
 						type="number"
@@ -802,21 +806,21 @@
 						id="ma_gv"
 						name="ma_gv"
 						required />
-					<label for="ho_ten">Họ Tên:</label>
+					<label for="ho_ten">Họ Tên</label>
 					<input
 						type="text"
 						class="form-control"
 						id="ho_ten"
 						name="ho_ten"
 						required />
-					<label for="ngay_sinh">Ngày Sinh:</label>
+					<label for="ngay_sinh">Ngày Sinh</label>
 					<input
 						type="date"
 						class="form-control"
 						id="ngay_sinh"
 						name="ngay_sinh"
 						required />
-					<label for="gioi_tinh">Giới Tính:</label>
+					<label for="gioi_tinh">Giới Tính</label>
 					<select
 						class="form-control"
 						id="gioi_tinh"
@@ -826,14 +830,14 @@
 						<option value="Nữ">Nữ</option>
 						<option value="Khác">Khác</option>
 					</select>
-					<label for="so_dien_thoai">Số Điện Thoại:</label>
+					<label for="so_dien_thoai">Số Điện Thoại</label>
 					<input
 						type="text"
 						class="form-control"
 						id="so_dien_thoai"
 						name="so_dien_thoai"
 						required />
-					<label for="email">Email:</label>
+					<label for="email">Email</label>
 					<input
 						type="email"
 						class="form-control"
@@ -852,22 +856,23 @@
 						class="form-control"
 						id="ma_gv"
 						name="ma_gv"
-						required />
-					<label for="ho_ten">Họ Tên:</label>
+						required
+						placeholder="Nhập mã giảng viên muốn chỉnh sửa..." />
+					<label for="ho_ten">Họ Tên</label>
 					<input
 						type="text"
 						class="form-control"
 						id="ho_ten"
 						name="ho_ten"
 						required />
-					<label for="ngay_sinh">Ngày Sinh:</label>
+					<label for="ngay_sinh">Ngày Sinh</label>
 					<input
 						type="date"
 						class="form-control"
 						id="ngay_sinh"
 						name="ngay_sinh"
 						required />
-					<label for="gioi_tinh">Giới Tính:</label>
+					<label for="gioi_tinh">Giới Tính</label>
 					<select
 						class="form-control"
 						id="gioi_tinh"
@@ -877,14 +882,14 @@
 						<option value="Nữ">Nữ</option>
 						<option value="Khác">Khác</option>
 					</select>
-					<label for="so_dien_thoai">Số Điện Thoại:</label>
+					<label for="so_dien_thoai">Số Điện Thoại</label>
 					<input
 						type="text"
 						class="form-control"
 						id="so_dien_thoai"
 						name="so_dien_thoai"
 						required />
-					<label for="email">Email:</label>
+					<label for="email">Email</label>
 					<input
 						type="email"
 						class="form-control"
@@ -955,8 +960,8 @@
 					<button class="button" type="submit">Thêm</button>
 				</form>
 
-				<!-- Tạo form sửa thông tin giảng viên -->
-				<h2>Chỉnh sửa thông tin giảng viên</h2>
+				<!-- Tạo form sửa thông tin giảng lớp học -->
+				<h2>Chỉnh sửa thông tin lớp học</h2>
 				<form method="POST" action="{{ url_for('update_lop_hoc') }}">
 					<label for="ma_lop">Mã lớp học</label>
 					<input
@@ -964,7 +969,8 @@
 						class="form-control"
 						id="ma_lop"
 						name="ma_lop"
-						required />
+						required
+						placeholder="Nhập mã lớp học muốn chỉnh sửa..." />
 					<label for="phong_hoc">Phòng học</label>
 					<input
 						type="text"
@@ -1029,7 +1035,7 @@
 				</form>
 
 				<!-- Tạo form sửa thông tin khoa -->
-				<h2>Chỉnh sửa thông tin giảng viên</h2>
+				<h2>Chỉnh sửa thông tin khoa</h2>
 				<form method="POST" action="{{ url_for('update_khoa') }}">
 					<label for="ma_khoa">Mã khoa</label>
 					<input
@@ -1037,7 +1043,8 @@
 						class="form-control"
 						id="ma_lop"
 						name="ma_lop"
-						required />
+						required
+						placeholder="Nhập mã khoa muốn chỉnh sửa..." />
 					<label for="ten_khoa">Tên khoa</label>
 					<input
 						type="text"
@@ -1117,7 +1124,8 @@
 						class="form-control"
 						id="ma_nganh"
 						name="ma_nganh"
-						required />
+						required
+						placeholder="Nhập mã ngành muốn chỉnh sửa..." />
 					<label for="ten_nganh">Tên ngành</label>
 					<input
 						type="text"
@@ -1180,7 +1188,7 @@
 						id="ma_sv"
 						name="ma_sv"
 						required />
-					<label for="ma_mon">Tên môn</label>
+					<label for="ma_mon">Mã môn</label>
 					<input
 						type="text"
 						class="form-control"
@@ -1233,7 +1241,7 @@
 						id="ma_gv"
 						name="ma_sv"
 						required />
-					<label for="ma_mon">Tên môn</label>
+					<label for="ma_mon">Mã môn</label>
 					<input
 						type="text"
 						class="form-control"
